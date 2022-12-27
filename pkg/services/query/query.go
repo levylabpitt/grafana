@@ -232,6 +232,25 @@ func (s *Service) handleQuerySingleDatasource(ctx context.Context, user *user.Si
 		req.Queries = append(req.Queries, q.query)
 	}
 
+	// The following code snippet iterates through all tables and collumns, or frames and fields as Grafana calls it, to delete
+	// irrelevant tables. This partially works but causes some issues on the frontend. It might be easier to process the data
+	// the frontend instead. I'll leave the code here for future reference though.
+	/*
+		res2, err2 := s.pluginClient.QueryData(ctx, req)
+		for _, response := range res2.Responses {
+			for _, frame := range response.Frames {
+				for _, field := range frame.Fields {
+					for i := 0; i < field.Len(); i++ {
+						s, _ := field.ConcreteAt(i)
+						if strings.HasSuffix(s.(string), "_index") || !strings.HasPrefix(s.(string), "llab_") {
+							field.Delete(i)
+							i--
+						}
+					}
+				}
+			}
+		}
+	*/
 	return s.pluginClient.QueryData(ctx, req)
 }
 
