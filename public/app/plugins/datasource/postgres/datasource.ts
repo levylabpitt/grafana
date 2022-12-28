@@ -57,12 +57,23 @@ export class PostgresDatasource extends SqlDatasource {
   }
 
   async fetchFields(query: SQLQuery): Promise<SQLSelectableValue[]> {
-    const schema = await this.runSql<{ column: string; type: string }>(getSchema(query.table), { refId: 'columns' });
+    // to-do: create a type for schema
+    // @ts-ignore
+    const schema: any = await this.runSql<{ column: string; type: string }>(query.llab && query.rawSql ? query.rawSql : getSchema(query.table), { refId: 'columns' });
     const result: SQLSelectableValue[] = [];
-    for (let i = 0; i < schema.length; i++) {
-      const column = schema.fields.column.values.get(i);
-      const type = schema.fields.type.values.get(i);
-      result.push({ label: column, value: column, type, ...getFieldConfig(type) });
+
+    // if statemnt for the manual llab structure and the default grafana structure
+    if (query.llab && query.rawSql) {
+      for (let i = 0; i < schema.length; i++) {
+        const type = schema.fields.name.type;
+        result.push({ label: `${schema.fields.name.values.get(i)} (${schema.fields.units.values.get(i)})`, value: schema.fields.path.values.get(i), type, ...getFieldConfig(type) });
+      }
+    } else {
+      for (let i = 0; i < schema.length; i++) {
+        const column = schema.fields.column.values.get(i);
+        const type = schema.fields.type.values.get(i);
+        result.push({ label: column, value: column, type, ...getFieldConfig(type) });
+      }
     }
     return result;
   }

@@ -3,7 +3,8 @@ import { useAsync } from 'react-use';
 
 import { EditorRows, EditorRow, EditorField } from '@grafana/experimental';
 
-import { DB, QueryEditorProps, QueryRowFilter } from '../../types';
+import { applyQueryDefaults } from '../../defaults';
+import { DB, QueryEditorProps, QueryRowFilter, SQLQuery } from '../../types';
 import { QueryToolbox } from '../query-editor-raw/QueryToolbox';
 
 import { Preview } from './Preview';
@@ -27,7 +28,8 @@ export const VisualEditor: React.FC<VisualEditorProps> = ({
   range,
 }) => {
   const state = useAsync(async () => {
-    const fields = await db.fields(query);
+    // const fields = await db.fields(query);
+    const fields = await db.fields(applyQueryDefaults({ rawSql: `select name, units, path from ${query.table}_index`, table: `${query.table}_index`, llab: true } as SQLQuery))
     return fields;
   }, [db, query.dataset, query.table]);
 

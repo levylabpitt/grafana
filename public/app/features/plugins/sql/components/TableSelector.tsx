@@ -36,9 +36,11 @@ export const TableSelector: React.FC<TableSelectorProps> = ({ db, query, value, 
   // filters anything that doesn't include 'llab' and also maps the label for each column with table_index
   if (state.value) {
     for (let i = 0; i < state.value.length; i++) {
+      // @ts-ignore
       if (!state.value[i].value.endsWith("_index") && state.value[i].value.startsWith("llab_")) {
-        var match = table_index.map(function (o) { return o.path; }).indexOf(state.value[i].value);
-        state.value[i].label = match == -1 ? state.value[i].label : table_index[match].name;
+        // @ts-ignore
+        let match = table_index.map(function (o) { return o.path; }).indexOf(state.value[i].value);
+        state.value[i].label = match === -1 ? state.value[i].label : table_index[match].name;
       } else {
         state.value.splice(i, 1);
         i--;
