@@ -59,7 +59,7 @@ export interface SQLQuery extends DataQuery {
   editorMode?: EditorMode;
   rawQuery?: boolean;
   // used specifically in VisualEditor.tsx to replace labels of columns
-  llab?: boolean;
+  llab?: number;
 }
 
 export interface NameValue {

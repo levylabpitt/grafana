@@ -29,7 +29,7 @@ export const VisualEditor: React.FC<VisualEditorProps> = ({
 }) => {
   const state = useAsync(async () => {
     // const fields = await db.fields(query);
-    const fields = await db.fields(applyQueryDefaults({ rawSql: `select name, units, path from ${query.table}_index`, table: `${query.table}_index`, llab: true } as SQLQuery))
+    const fields = await db.fields(applyQueryDefaults({ rawSql: `select name, units, path from ${query.table}_index`, table: `${query.table}_index`, llab: 1 } as SQLQuery))
     return fields;
   }, [db, query.dataset, query.table]);
 
