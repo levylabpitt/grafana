@@ -34,7 +34,8 @@ export function SelectRow({ sql, format, columns, onSqlChange, functions }: Sele
 
   const onColumnChange = useCallback(
     (item: QueryEditorFunctionExpression, index: number) => (column: SelectableValue<string>) => {
-      let modifiedItem = { ...item };
+      // calls the onAliasChange method to overwrite the alias every time a column is selected
+      let modifiedItem = { ...item, alias: `"${column?.label?.trim()}"` };
       if (!item.parameters?.length) {
         modifiedItem.parameters = [{ type: QueryEditorExpressionType.FunctionParameter, name: column.value, label: column.label } as const];
       } else {
