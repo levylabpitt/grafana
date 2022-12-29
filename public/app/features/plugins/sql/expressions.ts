@@ -64,4 +64,5 @@ export interface QueryEditorFunctionExpression {
 export interface QueryEditorFunctionParameterExpression {
   type: QueryEditorExpressionType.FunctionParameter;
   name?: string;
+  label?: string;
 }

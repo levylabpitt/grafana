@@ -63,7 +63,7 @@ export class PostgresDatasource extends SqlDatasource {
     const result: SQLSelectableValue[] = [];
 
     // if statemnt for the manual llab structure and the default grafana structure
-    if (query.llab == 1 && query.rawSql) {
+    if (query.llab === 1 && query.rawSql) {
       for (let i = 0; i < schema.length; i++) {
         const type = schema.fields.name.type;
         const name = schema.fields.name.values.get(i);
@@ -71,7 +71,7 @@ export class PostgresDatasource extends SqlDatasource {
         const path = schema.fields.path.values.get(i);
         result.push({ label: `${name}${units ? ` (${units})` : ''}`, value: path, type, ...getFieldConfig(type) });
       }
-    } else if (query.llab == 2 && query.rawSql) {
+    } else if (query.llab === 2 && query.rawSql) {
       for (let i = 0; i < schema.length; i++) {
         const type = schema.fields.name.type;
         result.push({ label: schema.fields.name.values.get(i), value: schema.fields.path.values.get(i), type, ...getFieldConfig(type) });

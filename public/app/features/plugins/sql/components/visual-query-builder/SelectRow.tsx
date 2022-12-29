@@ -36,10 +36,10 @@ export function SelectRow({ sql, format, columns, onSqlChange, functions }: Sele
     (item: QueryEditorFunctionExpression, index: number) => (column: SelectableValue<string>) => {
       let modifiedItem = { ...item };
       if (!item.parameters?.length) {
-        modifiedItem.parameters = [{ type: QueryEditorExpressionType.FunctionParameter, name: column.value } as const];
+        modifiedItem.parameters = [{ type: QueryEditorExpressionType.FunctionParameter, name: column.value, label: column.label } as const];
       } else {
         modifiedItem.parameters = item.parameters.map((p) =>
-          p.type === QueryEditorExpressionType.FunctionParameter ? { ...p, name: column.value } : p
+          p.type === QueryEditorExpressionType.FunctionParameter ? { ...p, name: column.value, label: column.label } : p
         );
       }
 
@@ -174,7 +174,9 @@ const getStyles = () => {
 
 function getColumnValue({ parameters }: QueryEditorFunctionExpression): SelectableValue<string> | null {
   const column = parameters?.find((p) => p.type === QueryEditorExpressionType.FunctionParameter);
-  if (column?.name) {
+  if (column?.label) {
+    return toOption(column.label);
+  } else if (column?.name) {
     return toOption(column.name);
   }
   return null;

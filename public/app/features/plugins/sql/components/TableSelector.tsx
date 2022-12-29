@@ -1,12 +1,11 @@
 import React from 'react';
 import { useAsync } from 'react-use';
 
-import { SelectableValue, toOption } from '@grafana/data';
+import { SelectableValue } from '@grafana/data';
 import { Select } from '@grafana/ui';
 
 import { applyQueryDefaults, QueryWithDefaults } from '../defaults';
 import { DB, ResourceSelectorProps, SQLQuery } from '../types';
-
 
 interface TableSelectorProps extends ResourceSelectorProps {
   db: DB;
@@ -21,10 +20,11 @@ export const TableSelector: React.FC<TableSelectorProps> = ({ db, query, value, 
     if (!query.dataset && !forceFetch) {
       return [];
     }
-    const tables = await db.tables(query.dataset);
-    const table_index = await db.fields(applyQueryDefaults({ rawSql: `select name, path from table_index`, table: `table_index`, llab: 2 } as SQLQuery))
-    const res: any = { tables: tables.map(toOption), table_index: table_index }
-    return res;
+    await db.tables(query.dataset);
+    const table_index = await db.fields(
+      applyQueryDefaults({ rawSql: `select name, path from table_index`, table: `table_index`, llab: 2, refId: 'tables' } as SQLQuery)
+    );
+    return table_index;
   }, [query.dataset]);
 
   return (
@@ -33,7 +33,7 @@ export const TableSelector: React.FC<TableSelectorProps> = ({ db, query, value, 
       disabled={state.loading}
       aria-label="Table selector"
       value={value}
-      options={state.value ? state.value.table_index : []}
+      options={state.value}
       onChange={onChange}
       isLoading={state.loading}
       menuShouldPortal={true}
