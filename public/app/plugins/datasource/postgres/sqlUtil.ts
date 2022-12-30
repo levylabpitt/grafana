@@ -61,6 +61,8 @@ export function toRawSql({ sql, table }: SQLQuery): string {
 
   if (sql.whereString) {
     rawQuery += `WHERE ${sql.whereString} `;
+  } else {
+    rawQuery += `WHERE $__timeFilter(time) `;
   }
 
   if (sql.groupBy?.[0]?.property.name) {

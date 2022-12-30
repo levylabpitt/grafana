@@ -22,7 +22,7 @@ export const TableSelector: React.FC<TableSelectorProps> = ({ db, query, value, 
     }
     await db.tables(query.dataset);
     const table_index = await db.fields(
-      applyQueryDefaults({ rawSql: `select name, path from table_index`, table: `table_index`, llab: 2, refId: 'tables' } as SQLQuery)
+      applyQueryDefaults({ rawSql: `SELECT name, path FROM table_index`, table: 'table_index', llab: 2, refId: 'tables' } as SQLQuery)
     );
     return table_index;
   }, [query.dataset]);
