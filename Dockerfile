@@ -2,7 +2,7 @@
 
 ARG BASE_IMAGE=alpine:3.15
 ARG JS_IMAGE=node:16-alpine3.15
-ARG GO_IMAGE=golang:1.19.4-alpine3.15
+ARG GO_IMAGE=golang:1.19.4-alpine3.17
 
 ARG GO_SRC=go-builder
 ARG JS_SRC=js-builder
@@ -74,7 +74,7 @@ FROM ${JS_SRC} as js-src
 # Final stage
 FROM ${BASE_IMAGE}
 
-LABEL maintainer="Grafana Labs <hello@grafana.com>"
+LABEL maintainer="Levy Lab <webmaster@levylab.org>"
 
 ARG GF_UID="472"
 ARG GF_GID="0"
