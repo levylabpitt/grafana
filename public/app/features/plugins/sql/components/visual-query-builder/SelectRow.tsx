@@ -37,7 +37,9 @@ export function SelectRow({ sql, format, columns, onSqlChange, functions }: Sele
       // calls the onAliasChange method to overwrite the alias every time a column is selected
       let modifiedItem = { ...item, alias: `"${column?.label?.trim()}"` };
       if (!item.parameters?.length) {
-        modifiedItem.parameters = [{ type: QueryEditorExpressionType.FunctionParameter, name: column.value, label: column.label } as const];
+        modifiedItem.parameters = [
+          { type: QueryEditorExpressionType.FunctionParameter, name: column.value, label: column.label } as const,
+        ];
       } else {
         modifiedItem.parameters = item.parameters.map((p) =>
           p.type === QueryEditorExpressionType.FunctionParameter ? { ...p, name: column.value, label: column.label } : p

@@ -59,7 +59,10 @@ export class PostgresDatasource extends SqlDatasource {
   async fetchFields(query: SQLQuery): Promise<SQLSelectableValue[]> {
     // to-do: create a type for schema
     // @ts-ignore
-    const schema: any = await this.runSql<{ column: string; type: string }>(query.llab && query.rawSql ? query.rawSql : getSchema(query.table), { refId: 'columns' });
+    const schema: any = await this.runSql<{ column: string; type: string }>(
+      query.llab && query.rawSql ? query.rawSql : getSchema(query.table),
+      { refId: 'columns' }
+    );
     const result: SQLSelectableValue[] = [];
 
     // if statemnt for the manual llab structure and the default grafana structure
@@ -74,7 +77,12 @@ export class PostgresDatasource extends SqlDatasource {
     } else if (query.llab === 2 && query.rawSql) {
       for (let i = 0; i < schema.length; i++) {
         const type = schema.fields.name.type;
-        result.push({ label: schema.fields.name.values.get(i), value: schema.fields.path.values.get(i), type, ...getFieldConfig(type) });
+        result.push({
+          label: schema.fields.name.values.get(i),
+          value: schema.fields.path.values.get(i),
+          type,
+          ...getFieldConfig(type),
+        });
       }
     } else {
       for (let i = 0; i < schema.length; i++) {
