@@ -60,7 +60,9 @@ export function toRawSql({ sql, table }: SQLQuery): string {
   }
 
   if (sql.whereString) {
-    rawQuery += `WHERE ${sql.whereString} `;
+    rawQuery += `WHERE ${sql.whereString} AND $__timeFilter(time AT TIME ZONE 'EST') `;
+  } else {
+    rawQuery += `WHERE $__timeFilter(time AT TIME ZONE 'EST') `;
   }
 
   if (sql.groupBy?.[0]?.property.name) {

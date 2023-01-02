@@ -28,6 +28,9 @@ export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range,
     };
   }, [datasource]);
 
+  if (query && query.rawSql) {
+    query.rawSql = query.rawSql.replace('time AS', `time AT TIME ZONE 'EST' AS`);
+  }
   const queryWithDefaults = applyQueryDefaults(query);
   const [queryRowFilter, setQueryRowFilter] = useState<QueryRowFilter>({
     filter: !!queryWithDefaults.sql?.whereString,

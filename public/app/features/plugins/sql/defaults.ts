@@ -20,7 +20,6 @@ export function applyQueryDefaults(q?: SQLQuery): SQLQuery {
     sql: q?.sql || {
       columns: [createFunctionField()],
       groupBy: [setGroupByField()],
-      whereString: '$__timeFilter(time)',
       limit: 50000,
     },
   };
