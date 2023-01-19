@@ -60,9 +60,9 @@ export function toRawSql({ sql, table }: SQLQuery): string {
   }
 
   if (sql.whereString) {
-    rawQuery += `WHERE ${sql.whereString} AND $__timeFilter(time AT TIME ZONE 'EST') `;
+    rawQuery += `WHERE ${sql.whereString} AND $__timeFilter(time AT TIME ZONE 'America/New_York') `;
   } else {
-    rawQuery += `WHERE $__timeFilter(time AT TIME ZONE 'EST') `;
+    rawQuery += `WHERE $__timeFilter(time AT TIME ZONE 'America/New_York') `;
   }
 
   if (sql.groupBy?.[0]?.property.name) {
@@ -72,6 +72,8 @@ export function toRawSql({ sql, table }: SQLQuery): string {
 
   if (sql.orderBy?.property.name) {
     rawQuery += `ORDER BY ${sql.orderBy.property.name} `;
+  } else {
+    rawQuery += `ORDER BY time DESC `
   }
 
   if (sql.orderBy?.property.name && sql.orderByDirection) {
