@@ -68,6 +68,8 @@ func (m *postgresMacroEngine) Interpolate(query *backend.DataQuery, timeRange ba
 
 //nolint:gocyclo
 func (m *postgresMacroEngine) evaluateMacro(timeRange backend.TimeRange, query *backend.DataQuery, name string, args []string) (string, error) {
+	loc, _ := time.LoadLocation("America/New_York")
+
 	switch name {
 	case "__time":
 		if len(args) == 0 {
@@ -84,11 +86,11 @@ func (m *postgresMacroEngine) evaluateMacro(timeRange backend.TimeRange, query *
 			return "", fmt.Errorf("missing time column argument for macro %v", name)
 		}
 
-		return fmt.Sprintf("%s BETWEEN '%s' AND '%s'", args[0], timeRange.From.UTC().Format(time.RFC3339Nano), timeRange.To.UTC().Format(time.RFC3339Nano)), nil
+		return fmt.Sprintf("%s BETWEEN '%s' AND '%s'", args[0], timeRange.From.In(loc).Format(time.RFC3339Nano), timeRange.To.In(loc).Format(time.RFC3339Nano)), nil
 	case "__timeFrom":
-		return fmt.Sprintf("'%s'", timeRange.From.UTC().Format(time.RFC3339Nano)), nil
+		return fmt.Sprintf("'%s'", timeRange.From.In(loc).Format(time.RFC3339Nano)), nil
 	case "__timeTo":
-		return fmt.Sprintf("'%s'", timeRange.To.UTC().Format(time.RFC3339Nano)), nil
+		return fmt.Sprintf("'%s'", timeRange.To.In(loc).Format(time.RFC3339Nano)), nil
 	case "__timeGroup":
 		if len(args) < 2 {
 			return "", fmt.Errorf("macro %v needs time column and interval and optional fill value", name)
@@ -123,16 +125,16 @@ func (m *postgresMacroEngine) evaluateMacro(timeRange backend.TimeRange, query *
 		if len(args) == 0 {
 			return "", fmt.Errorf("missing time column argument for macro %v", name)
 		}
-		return fmt.Sprintf("%s >= %d AND %s <= %d", args[0], timeRange.From.UTC().Unix(), args[0], timeRange.To.UTC().Unix()), nil
+		return fmt.Sprintf("%s >= %d AND %s <= %d", args[0], timeRange.From.In(loc).Unix(), args[0], timeRange.To.In(loc).Unix()), nil
 	case "__unixEpochNanoFilter":
 		if len(args) == 0 {
 			return "", fmt.Errorf("missing time column argument for macro %v", name)
 		}
-		return fmt.Sprintf("%s >= %d AND %s <= %d", args[0], timeRange.From.UTC().UnixNano(), args[0], timeRange.To.UTC().UnixNano()), nil
+		return fmt.Sprintf("%s >= %d AND %s <= %d", args[0], timeRange.From.In(loc).UnixNano(), args[0], timeRange.To.In(loc).UnixNano()), nil
 	case "__unixEpochNanoFrom":
-		return fmt.Sprintf("%d", timeRange.From.UTC().UnixNano()), nil
+		return fmt.Sprintf("%d", timeRange.From.In(loc).UnixNano()), nil
 	case "__unixEpochNanoTo":
-		return fmt.Sprintf("%d", timeRange.To.UTC().UnixNano()), nil
+		return fmt.Sprintf("%d", timeRange.To.In(loc).UnixNano()), nil
 	case "__unixEpochGroup":
 		if len(args) < 2 {
 			return "", fmt.Errorf("macro %v needs time column and interval and optional fill value", name)
