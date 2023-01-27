@@ -670,7 +670,7 @@ export interface Dashboard {
   liveNow?: boolean;
   panels?: Array<(Panel | RowPanel | GraphPanel | HeatmapPanel)>;
   /**
-   * TODO docs
+   * Refresh rate of dashboard. Represented via interval string, e.g. "5s", "1m", "1h", "1d".
    */
   refresh?: (string | false);
   /**
@@ -777,9 +777,9 @@ export interface Dashboard {
     time_options: Array<string>;
   };
   /**
-   * Timezone of dashboard,
+   * Timezone of dashboard. Accepts IANA TZDB zone ID or "browser" or "utc".
    */
-  timezone?: ('browser' | 'utc' | '');
+  timezone?: string;
   /**
    * Title of dashboard.
    */
