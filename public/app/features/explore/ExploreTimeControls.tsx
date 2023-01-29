@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { TimeRange, TimeZone, RawTimeRange, dateTimeForTimeZone, dateMath } from '@grafana/data';
+import { TimeRange, TimeBucket, TimeZone, RawTimeRange, dateTimeForTimeZone, dateMath } from '@grafana/data';
 import { reportInteraction } from '@grafana/runtime';
 import { TimePickerWithHistory } from 'app/core/components/TimePicker/TimePickerWithHistory';
 import { getShiftedTimeRange, getZoomedTimeRange } from 'app/core/utils/timePicker';
@@ -95,7 +95,7 @@ export class ExploreTimeControls extends Component<Props> {
         widthOverride={splitted ? window.innerWidth / 2 : undefined}
         onChange={this.onChangeTimePicker}
         onChangeTimeZone={onChangeTimeZone}
-        timeBucket={{ enabled: false, width: 5, unit: 'm' }}
+        timeBucket={{ enabled: false, width: 5, unit: 'm' } as TimeBucket}
         onChangeTimeBucket={() => {}}
         onChangeFiscalYearStartMonth={onChangeFiscalYearStartMonth}
       />
