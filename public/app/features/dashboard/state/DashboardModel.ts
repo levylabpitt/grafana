@@ -80,6 +80,7 @@ export class DashboardModel implements TimeModel {
   editable: any;
   graphTooltip: DashboardCursorSync;
   time: any;
+  bucket: any;
   liveNow: boolean;
   private originalTime: any;
   timepicker: any;
@@ -141,6 +142,7 @@ export class DashboardModel implements TimeModel {
     this.editable = data.editable !== false;
     this.graphTooltip = data.graphTooltip || 0;
     this.time = data.time ?? { from: 'now-6h', to: 'now' };
+    this.bucket = data.bucket ?? { enabled: false, width: 5, unit: "m" };
     this.timepicker = data.timepicker ?? {};
     this.liveNow = Boolean(data.liveNow);
     this.templating = this.ensureListExist(data.templating);

@@ -1,14 +1,17 @@
 import { uniqBy } from 'lodash';
 import React from 'react';
 
-import { TimeRange, isDateTime, rangeUtil, TimeZone } from '@grafana/data';
+import { TimeRange, TimeBucket, isDateTime, rangeUtil, TimeZone } from '@grafana/data';
 import { TimeRangePickerProps, TimeRangePicker } from '@grafana/ui';
 
 import { LocalStorageValueProvider } from '../LocalStorageValueProvider';
 
 const LOCAL_STORAGE_KEY = 'grafana.dashboard.timepicker.history';
 
-interface Props extends Omit<TimeRangePickerProps, 'history' | 'theme'> {}
+interface Props extends Omit<TimeRangePickerProps, 'history' | 'theme'> {
+  timeBucket: TimeBucket;
+  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
+}
 
 // Simplified object to store in local storage
 interface TimePickerHistoryItem {
@@ -34,6 +37,8 @@ export const TimePickerWithHistory = (props: Props) => {
               onAppendToHistory(value, values, onSaveToStore);
               props.onChange(value);
             }}
+            timeBucket={props.timeBucket}
+            onChangeTimeBucket={props.onChangeTimeBucket}
           />
         );
       }}

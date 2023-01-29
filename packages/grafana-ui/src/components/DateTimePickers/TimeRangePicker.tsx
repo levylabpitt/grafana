@@ -11,6 +11,7 @@ import {
   dateTimeFormat,
   timeZoneFormatUserFriendly,
   TimeRange,
+  TimeBucket,
   TimeZone,
   dateMath,
 } from '@grafana/data';
@@ -30,11 +31,13 @@ import { quickOptions } from './options';
 export interface TimeRangePickerProps {
   hideText?: boolean;
   value: TimeRange;
+  timeBucket: TimeBucket;
   timeZone?: TimeZone;
   fiscalYearStartMonth?: number;
   timeSyncButton?: JSX.Element;
   isSynced?: boolean;
   onChange: (timeRange: TimeRange) => void;
+  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
   onChangeTimeZone: (timeZone: TimeZone) => void;
   onChangeFiscalYearStartMonth?: (month: number) => void;
   onMoveBackward: () => void;
@@ -134,6 +137,8 @@ export function TimeRangePicker(props: TimeRangePickerProps) {
                 fiscalYearStartMonth={fiscalYearStartMonth}
                 value={value}
                 onChange={onChange}
+                timeBucket={props.timeBucket}
+                onChangeTimeBucket={props.onChangeTimeBucket}
                 quickOptions={quickOptions}
                 history={history}
                 showHistory

@@ -1,7 +1,17 @@
 import { css, cx } from '@emotion/css';
 import React, { memo, useMemo, useState } from 'react';
 
-import { GrafanaTheme2, isDateTime, rangeUtil, RawTimeRange, TimeOption, TimeRange, TimeZone } from '@grafana/data';
+import {
+  SelectableValue,
+  GrafanaTheme2,
+  isDateTime,
+  rangeUtil,
+  RawTimeRange,
+  TimeOption,
+  TimeRange,
+  TimeBucket,
+  TimeZone,
+} from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Field, Switch, Input, Select } from '@grafana/ui';
 
@@ -36,18 +46,21 @@ interface Props {
   widthOverride?: number;
 }
 
-export interface PropsWithScreenSize extends Props {
+interface PropsWithTimeBucket extends Props {
+  timeBucket: TimeBucket;
+  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
+}
+export interface PropsWithScreenSize extends PropsWithTimeBucket {
   isFullscreen: boolean;
 }
 
-interface FormProps extends Omit<Props, 'history'> {
+interface FormProps extends Omit<PropsWithTimeBucket, 'history'> {
   historyOptions?: TimeOption[];
 }
 
-interface TimeBucketProps {
-  bucketEnabled: boolean;
-  bucketWidth?: number;
-  bucketUnit: "s" | "m" | "h" | "d" | "w" | "M" | "y";
+interface TimeBucketEditorProps {
+  timeBucket: TimeBucket;
+  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
 }
 
 export const TimePickerContentWithScreenSize: React.FC<PropsWithScreenSize> = (props) => {
@@ -122,44 +135,63 @@ export const TimePickerContentWithScreenSize: React.FC<PropsWithScreenSize> = (p
   );
 };
 
-export const TimePickerContent = (props: Props) => {
+export const TimePickerContent = (props: PropsWithTimeBucket) => {
   const { widthOverride } = props;
   const theme = useTheme2();
   const isFullscreen = (widthOverride || window.innerWidth) >= theme.breakpoints.values.lg;
   return <TimePickerContentWithScreenSize {...props} isFullscreen={isFullscreen} />;
 };
 
-const TimeBucketEditor = (props: TimeBucketProps) => {
-  const { bucketEnabled, bucketWidth, bucketUnit } = props;
-  const units = [{ label: "Seconds", value: "s" }, { label: "Minutes", value: "m" }, { label: "Hours", value: "h" }, { label: "Days", value: "d" }, { label: "Weeks", value: "w" }, { label: "Months", value: "M" }, { label: "Years", value: "y" }];
+const TimeBucketEditor = (props: TimeBucketEditorProps) => {
+  let { timeBucket, onChangeTimeBucket } = props;
+  const units: Array<SelectableValue<'s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y'>> = [
+    { label: 'Seconds', value: 's' },
+    { label: 'Minutes', value: 'm' },
+    { label: 'Hours', value: 'h' },
+    { label: 'Days', value: 'd' },
+    { label: 'Weeks', value: 'w' },
+    { label: 'Months', value: 'M' },
+    { label: 'Years', value: 'y' },
+  ];
   return (
     <Field label="Enable time buckets">
-      <div style={{ display: "flex", columnGap: "8px" }}>
-        <div style={{ display: "flex", alignSelf: "center" }}>
+      <div style={{ display: 'flex', columnGap: '8px' }}>
+        <div style={{ display: 'flex', alignSelf: 'center' }}>
           <Switch
             id="enable-time-buckets"
-            value={bucketEnabled}
-            onChange={() => null}
+            value={timeBucket.enabled}
+            onChange={() =>
+              onChangeTimeBucket({ enabled: !timeBucket.enabled, width: timeBucket.width, unit: timeBucket.unit })
+            }
           />
         </div>
         <Input
           type="number"
-          defaultValue={bucketWidth}
-          onChange={() => null}
+          defaultValue={timeBucket.width}
           placeholder="Width"
+          onChange={(e) =>
+            onChangeTimeBucket({
+              enabled: timeBucket.enabled,
+              width: parseInt(e.currentTarget.value || '5'),
+              unit: timeBucket.unit,
+            })
+          }
         />
         <Select
           aria-label="Unit"
-          isSearchable={false}
-          value={bucketUnit}
+          isSearchable={true}
+          value={timeBucket.unit}
           options={units}
           placeholder="Unit"
-          onChange={() => { }}
+          menuShouldPortal={false}
+          onChange={(e: SelectableValue) =>
+            onChangeTimeBucket({ enabled: timeBucket.enabled, width: timeBucket.width, unit: e.value })
+          }
         />
       </div>
     </Field>
-  )
-}
+  );
+};
 
 const NarrowScreenForm = (props: FormProps) => {
   const { value, hideQuickRanges, onChange, timeZone, historyOptions = [], showHistory } = props;
@@ -239,7 +271,7 @@ const FullScreenForm: React.FC<FormProps> = (props) => {
         />
       </div>
       <div className={styles.container}>
-        <TimeBucketEditor bucketEnabled={false} bucketUnit={"m"} />
+        <TimeBucketEditor timeBucket={props.timeBucket} onChangeTimeBucket={props.onChangeTimeBucket} />
       </div>
       {props.showHistory && (
         <div className={styles.recent} style={{ paddingTop: '-32px', marginTop: '-32px' }}>

@@ -18,6 +18,12 @@ export interface TimeRange {
   raw: RawTimeRange;
 }
 
+export interface TimeBucket {
+  enabled: boolean;
+  width: number;
+  unit: ('s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y');
+}
+
 /**
  * Type to describe relative time to now in seconds.
  * @internal
