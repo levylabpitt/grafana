@@ -3,6 +3,7 @@ import React, { memo, useMemo, useState } from 'react';
 
 import { GrafanaTheme2, isDateTime, rangeUtil, RawTimeRange, TimeOption, TimeRange, TimeZone } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
+import { Field, Switch, Input, Select } from '@grafana/ui';
 
 import { FilterInput } from '../..';
 import { stylesFactory, useTheme2 } from '../../../themes';
@@ -41,6 +42,12 @@ export interface PropsWithScreenSize extends Props {
 
 interface FormProps extends Omit<Props, 'history'> {
   historyOptions?: TimeOption[];
+}
+
+interface TimeBucketProps {
+  bucketEnabled: boolean;
+  bucketWidth?: number;
+  bucketUnit: "s" | "m" | "h" | "d" | "w" | "M" | "y";
 }
 
 export const TimePickerContentWithScreenSize: React.FC<PropsWithScreenSize> = (props) => {
@@ -122,6 +129,38 @@ export const TimePickerContent = (props: Props) => {
   return <TimePickerContentWithScreenSize {...props} isFullscreen={isFullscreen} />;
 };
 
+const TimeBucketEditor = (props: TimeBucketProps) => {
+  const { bucketEnabled, bucketWidth, bucketUnit } = props;
+  const units = [{ label: "Seconds", value: "s" }, { label: "Minutes", value: "m" }, { label: "Hours", value: "h" }, { label: "Days", value: "d" }, { label: "Weeks", value: "w" }, { label: "Months", value: "M" }, { label: "Years", value: "y" }];
+  return (
+    <Field label="Enable time buckets">
+      <div style={{ display: "flex", columnGap: "8px" }}>
+        <div style={{ display: "flex", alignSelf: "center" }}>
+          <Switch
+            id="enable-time-buckets"
+            value={bucketEnabled}
+            onChange={() => null}
+          />
+        </div>
+        <Input
+          type="number"
+          defaultValue={bucketWidth}
+          onChange={() => null}
+          placeholder="Width"
+        />
+        <Select
+          aria-label="Unit"
+          isSearchable={false}
+          value={bucketUnit}
+          options={units}
+          placeholder="Unit"
+          onChange={() => { }}
+        />
+      </div>
+    </Field>
+  )
+}
+
 const NarrowScreenForm = (props: FormProps) => {
   const { value, hideQuickRanges, onChange, timeZone, historyOptions = [], showHistory } = props;
   const theme = useTheme2();
@@ -199,8 +238,11 @@ const FullScreenForm: React.FC<FormProps> = (props) => {
           isReversed={isReversed}
         />
       </div>
+      <div className={styles.container}>
+        <TimeBucketEditor bucketEnabled={false} bucketUnit={"m"} />
+      </div>
       {props.showHistory && (
-        <div className={styles.recent}>
+        <div className={styles.recent} style={{ paddingTop: '-32px', marginTop: '-32px' }}>
           <TimeRangeList
             title={t('time-picker.absolute.recent-title', 'Recently used absolute ranges')}
             options={historyOptions || []}
