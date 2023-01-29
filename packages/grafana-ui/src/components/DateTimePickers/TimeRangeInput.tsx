@@ -105,6 +105,8 @@ export const TimeRangeInput: FC<TimeRangeInputProps> = ({
             timeZone={timeZone}
             value={isValidTimeRange(value) ? value : getDefaultTimeRange()}
             onChange={onRangeChange}
+            timeBucket={{ enabled: false, width: 5, unit: 'm' }}
+            onChangeTimeBucket={() => {}}
             quickOptions={quickOptions}
             onChangeTimeZone={onChangeTimeZone}
             className={styles.content}

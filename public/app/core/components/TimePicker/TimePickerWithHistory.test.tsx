@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { getDefaultTimeRange } from '@grafana/data';
+import { getDefaultTimeRange, TimeBucket } from '@grafana/data';
 
 import { TimePickerWithHistory } from './TimePickerWithHistory';
 
@@ -35,6 +35,7 @@ describe('TimePickerWithHistory', () => {
   const props = {
     timeZone: 'utc',
     onChange: () => {},
+    onChangeTimeBucket: () => {},
     onChangeTimeZone: () => {},
     onMoveBackward: () => {},
     onMoveForward: () => {},
@@ -45,7 +46,8 @@ describe('TimePickerWithHistory', () => {
 
   it('Should load with no history', async () => {
     const timeRange = getDefaultTimeRange();
-    render(<TimePickerWithHistory value={timeRange} {...props} />);
+    const timeBucket: TimeBucket = { enabled: false, width: 5, unit: 'm' };
+    render(<TimePickerWithHistory value={timeRange} timeBucket={timeBucket} {...props} />);
     await userEvent.click(screen.getByLabelText(/Time range selected/));
 
     expect(screen.getByText(/It looks like you haven't used this time picker before/i)).toBeInTheDocument();
@@ -55,7 +57,8 @@ describe('TimePickerWithHistory', () => {
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(OLD_LOCAL_STORAGE));
 
     const timeRange = getDefaultTimeRange();
-    render(<TimePickerWithHistory value={timeRange} {...props} />);
+    const timeBucket: TimeBucket = { enabled: false, width: 5, unit: 'm' };
+    render(<TimePickerWithHistory value={timeRange} timeBucket={timeBucket} {...props} />);
     await userEvent.click(screen.getByLabelText(/Time range selected/));
 
     expect(screen.getByText(/2022-12-03 00:00:00 to 2022-12-03 23:59:59/i)).toBeInTheDocument();
@@ -66,7 +69,8 @@ describe('TimePickerWithHistory', () => {
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(NEW_LOCAL_STORAGE));
 
     const timeRange = getDefaultTimeRange();
-    render(<TimePickerWithHistory value={timeRange} {...props} />);
+    const timeBucket: TimeBucket = { enabled: false, width: 5, unit: 'm' };
+    render(<TimePickerWithHistory value={timeRange} timeBucket={timeBucket} {...props} />);
     await userEvent.click(screen.getByLabelText(/Time range selected/));
 
     expect(screen.queryByText(/2022-12-03 00:00:00 to 2022-12-03 23:59:59/i)).toBeInTheDocument();
@@ -75,7 +79,8 @@ describe('TimePickerWithHistory', () => {
 
   it('Saves changes into local storage without duplicates', async () => {
     const timeRange = getDefaultTimeRange();
-    render(<TimePickerWithHistory value={timeRange} {...props} />);
+    const timeBucket: TimeBucket = { enabled: false, width: 5, unit: 'm' };
+    render(<TimePickerWithHistory value={timeRange} timeBucket={timeBucket} {...props} />);
     await userEvent.click(screen.getByLabelText(/Time range selected/));
 
     await clearAndType(getFromField(), '2022-12-03 00:00:00');
@@ -110,7 +115,8 @@ describe('TimePickerWithHistory', () => {
     ];
 
     const timeRange = getDefaultTimeRange();
-    render(<TimePickerWithHistory value={timeRange} {...props} />);
+    const timeBucket: TimeBucket = { enabled: false, width: 5, unit: 'm' };
+    render(<TimePickerWithHistory value={timeRange} timeBucket={timeBucket} {...props} />);
     await userEvent.click(screen.getByLabelText(/Time range selected/));
 
     for (const [inputFrom, inputTo] of inputRanges) {

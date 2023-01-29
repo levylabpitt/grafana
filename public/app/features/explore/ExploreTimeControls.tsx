@@ -95,6 +95,8 @@ export class ExploreTimeControls extends Component<Props> {
         widthOverride={splitted ? window.innerWidth / 2 : undefined}
         onChange={this.onChangeTimePicker}
         onChangeTimeZone={onChangeTimeZone}
+        timeBucket={{ enabled: false, width: 5, unit: 'm' }}
+        onChangeTimeBucket={() => {}}
         onChangeFiscalYearStartMonth={onChangeFiscalYearStartMonth}
       />
     );
