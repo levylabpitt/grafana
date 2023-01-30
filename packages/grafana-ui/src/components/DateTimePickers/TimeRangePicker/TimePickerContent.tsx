@@ -160,22 +160,14 @@ const TimeBucketEditor = (props: TimeBucketEditorProps) => {
           <Switch
             id="enable-time-buckets"
             value={timeBucket.enabled}
-            onChange={() =>
-              onChangeTimeBucket({ enabled: !timeBucket.enabled, width: timeBucket.width, unit: timeBucket.unit })
-            }
+            onChange={() => onChangeTimeBucket({ ...timeBucket, enabled: !timeBucket.enabled })}
           />
         </div>
         <Input
           type="number"
           defaultValue={timeBucket.width}
           placeholder="Width"
-          onChange={(e) =>
-            onChangeTimeBucket({
-              enabled: timeBucket.enabled,
-              width: parseInt(e.currentTarget.value || '5'),
-              unit: timeBucket.unit,
-            })
-          }
+          onChange={(e) => onChangeTimeBucket({ ...timeBucket, width: parseInt(e.currentTarget.value || '5') })}
         />
         <Select
           aria-label="Unit"
@@ -184,9 +176,7 @@ const TimeBucketEditor = (props: TimeBucketEditorProps) => {
           options={units}
           placeholder="Unit"
           menuShouldPortal={false}
-          onChange={(e: SelectableValue) =>
-            onChangeTimeBucket({ enabled: timeBucket.enabled, width: timeBucket.width, unit: e.value })
-          }
+          onChange={(e: SelectableValue) => onChangeTimeBucket({ ...timeBucket, unit: e.value })}
         />
       </div>
     </Field>

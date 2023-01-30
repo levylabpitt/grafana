@@ -72,8 +72,6 @@ export function toRawSql({ sql, table }: SQLQuery): string {
 
   if (sql.orderBy?.property.name) {
     rawQuery += `ORDER BY ${sql.orderBy.property.name} `;
-  } else {
-    rawQuery += `ORDER BY time DESC `;
   }
 
   if (sql.orderBy?.property.name && sql.orderByDirection) {

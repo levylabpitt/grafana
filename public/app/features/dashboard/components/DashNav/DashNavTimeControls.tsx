@@ -64,7 +64,6 @@ export class DashNavTimeControls extends Component<Props> {
 
   onChangeTimeBucket = (timeBucket: TimeBucket) => {
     this.props.dashboard.bucket = timeBucket;
-    this.onRefresh();
   }
 
   onChangeTimeZone = (timeZone: TimeZone) => {

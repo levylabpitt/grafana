@@ -28,7 +28,14 @@ export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range,
     };
   }, [datasource]);
 
-  if (query && query.rawSql) {
+  const timeBucket = { enabled: true, width: 1, unit: 'm' };
+  if (query.rawSql && timeBucket.enabled) {
+    query.rawSql = query.rawSql.replace('time AS', `$__timeGroup() AS`);
+    query.rawSql = query.rawSql.replace(
+      / *\$__timeGroup\([^)]*\) */g,
+      ` $__timeGroup(time AT TIME ZONE 'America/New_York', '${timeBucket.width}${timeBucket.unit}')`
+    );
+  } else if (query.rawSql) {
     query.rawSql = query.rawSql.replace('time AS', `time AT TIME ZONE 'America/New_York' AS`);
   }
   const queryWithDefaults = applyQueryDefaults(query);
