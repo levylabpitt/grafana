@@ -154,7 +154,7 @@ const TimeBucketEditor = (props: TimeBucketEditorProps) => {
     { label: 'Years', value: 'y' },
   ];
   return (
-    <Field label="Enable time buckets">
+    <Field label="Enable time buckets" style={{ paddingTop: '18px' }}>
       <div style={{ display: 'flex', columnGap: '8px' }}>
         <div style={{ display: 'flex', alignSelf: 'center' }}>
           <Switch

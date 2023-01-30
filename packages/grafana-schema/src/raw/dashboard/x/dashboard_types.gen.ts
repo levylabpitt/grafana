@@ -760,14 +760,6 @@ export interface Dashboard {
     to: string;
   };
   /**
-   * Time bucket
-   */
-  bucket?: {
-    enabled: boolean;
-    width: number;
-    unit: ('s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y');
-  }
-  /**
    * TODO docs
    * TODO this appears to be spread all over in the frontend. Concepts will likely need tidying in tandem with schema changes
    */
