@@ -9,5 +9,11 @@ import { PostgresDatasource } from './datasource';
 const queryHeaderProps = { isDatasetSelectorHidden: true };
 
 export function QueryEditor(props: QueryEditorProps<PostgresDatasource, SQLQuery, SQLOptions>) {
-  return <SqlQueryEditor {...props} queryHeaderProps={queryHeaderProps} />;
+  return (
+    <SqlQueryEditor
+      {...props}
+      queryHeaderProps={queryHeaderProps}
+      timeBucket={props.timeBucket ? props.timeBucket : { enabled: false, width: 5, unit: 'm' }}
+    />
+  );
 }

@@ -98,7 +98,7 @@ export class DashNavTimeControls extends Component<Props> {
         <TimePickerWithHistory
           value={timePickerValue}
           onChange={this.onChangeTimePicker}
-          timeBucket={timeBucket}
+          timeBucket={timeBucket ? timeBucket : { enabled: false, width: 5, unit: 'm' }}
           onChangeTimeBucket={this.onChangeTimeBucket}
           timeZone={timeZone}
           fiscalYearStartMonth={fiscalYearStartMonth}

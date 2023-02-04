@@ -81,7 +81,7 @@ export class DashboardModel implements TimeModel {
   editable: any;
   graphTooltip: DashboardCursorSync;
   time: any;
-  bucket: any;
+  bucket: TimeBucket;
   liveNow: boolean;
   private originalTime: any;
   timepicker: any;

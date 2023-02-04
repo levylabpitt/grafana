@@ -11,7 +11,7 @@ import { DataFrame, DataFrameDTO } from './dataFrame';
 import { PanelData } from './panel';
 import { GrafanaPlugin, PluginMeta } from './plugin';
 import { DataQuery } from './query';
-import { RawTimeRange, TimeRange } from './time';
+import { RawTimeRange, TimeBucket, TimeRange } from './time';
 import { CustomVariableSupport, DataSourceVariableSupport, StandardVariableSupport } from './variables';
 
 import { DataSourceRef, WithAccessControlMetadata } from '.';
@@ -388,6 +388,7 @@ export interface QueryEditorProps<
    */
   data?: PanelData;
   range?: TimeRange;
+  timeBucket?: TimeBucket;
   exploreId?: any;
   history?: Array<HistoryItem<TQuery>>;
   queries?: DataQuery[];

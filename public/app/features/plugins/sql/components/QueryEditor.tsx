@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAsync } from 'react-use';
 
-import { QueryEditorProps } from '@grafana/data';
+import { QueryEditorProps, TimeBucket } from '@grafana/data';
 import { EditorMode, Space } from '@grafana/experimental';
 
 import { SqlDatasource } from '../datasource/SqlDatasource';
@@ -15,9 +15,10 @@ import { VisualEditor } from './visual-query-builder/VisualEditor';
 
 interface Props extends QueryEditorProps<SqlDatasource, SQLQuery, SQLOptions> {
   queryHeaderProps?: Pick<QueryHeaderProps, 'isDatasetSelectorHidden'>;
+  timeBucket?: TimeBucket;
 }
 
-export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range, queryHeaderProps }: Props) {
+export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range, queryHeaderProps, timeBucket }: Props) {
   const [isQueryRunnable, setIsQueryRunnable] = useState(true);
   const db = datasource.getDB();
   const { loading, error } = useAsync(async () => {
@@ -28,8 +29,7 @@ export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range,
     };
   }, [datasource]);
 
-  const timeBucket = { enabled: true, width: 1, unit: 'm' };
-  if (query.rawSql && timeBucket.enabled) {
+  if (timeBucket?.enabled && query.rawSql) {
     query.rawSql = query.rawSql.replace('time AS', `$__timeGroup() AS`);
     query.rawSql = query.rawSql.replace(
       / *\$__timeGroup\([^)]*\) */g,

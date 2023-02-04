@@ -19,6 +19,7 @@ import {
   PanelEvents,
   QueryResultMetaNotice,
   TimeRange,
+  TimeBucket,
   toLegacyResponseData,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
@@ -60,6 +61,7 @@ interface Props<TQuery extends DataQuery> {
   onQueryCopied?: () => void;
   onQueryRemoved?: () => void;
   onQueryToggled?: (queryStatus?: boolean | undefined) => void;
+  timeBucket: TimeBucket;
 }
 
 interface State<TQuery extends DataQuery> {
@@ -247,7 +249,7 @@ export class QueryEditorRow<TQuery extends DataQuery> extends PureComponent<Prop
   }
 
   renderPluginEditor = () => {
-    const { query, onChange, queries, onRunQuery, onAddQuery, app = CoreApp.PanelEditor, history } = this.props;
+    const { query, onChange, queries, onRunQuery, onAddQuery, app = CoreApp.PanelEditor, history, timeBucket } = this.props;
     const { datasource, data } = this.state;
 
     if (this.isWaitingForDatasourceToLoad()) {
@@ -273,6 +275,7 @@ export class QueryEditorRow<TQuery extends DataQuery> extends PureComponent<Prop
               onAddQuery={onAddQuery}
               data={data}
               range={getTimeSrv().timeRange()}
+              timeBucket={timeBucket ? timeBucket : { enabled: false, width: 5, unit: 'm' }}
               queries={queries}
               app={app}
               history={history}
