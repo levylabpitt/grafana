@@ -167,7 +167,7 @@ const TimeBucketEditor = (props: TimeBucketEditorProps) => {
           type="number"
           defaultValue={timeBucket.width}
           placeholder="Width"
-          onChange={(e) => onChangeTimeBucket({ ...timeBucket, width: parseInt(e.currentTarget.value || '5') })}
+          onChange={(e) => onChangeTimeBucket({ ...timeBucket, width: parseInt(e.currentTarget.value || '5', 10) })}
         />
         <Select
           aria-label="Unit"

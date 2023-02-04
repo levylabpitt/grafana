@@ -249,7 +249,16 @@ export class QueryEditorRow<TQuery extends DataQuery> extends PureComponent<Prop
   }
 
   renderPluginEditor = () => {
-    const { query, onChange, queries, onRunQuery, onAddQuery, app = CoreApp.PanelEditor, history, timeBucket } = this.props;
+    const {
+      query,
+      onChange,
+      queries,
+      onRunQuery,
+      onAddQuery,
+      app = CoreApp.PanelEditor,
+      history,
+      timeBucket,
+    } = this.props;
     const { datasource, data } = this.state;
 
     if (this.isWaitingForDatasourceToLoad()) {

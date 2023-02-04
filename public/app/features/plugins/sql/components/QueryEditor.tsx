@@ -18,7 +18,15 @@ interface Props extends QueryEditorProps<SqlDatasource, SQLQuery, SQLOptions> {
   timeBucket?: TimeBucket;
 }
 
-export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range, queryHeaderProps, timeBucket }: Props) {
+export function SqlQueryEditor({
+  datasource,
+  query,
+  onChange,
+  onRunQuery,
+  range,
+  queryHeaderProps,
+  timeBucket,
+}: Props) {
   const [isQueryRunnable, setIsQueryRunnable] = useState(true);
   const db = datasource.getDB();
   const { loading, error } = useAsync(async () => {

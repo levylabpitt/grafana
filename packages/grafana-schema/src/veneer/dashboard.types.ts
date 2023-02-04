@@ -36,7 +36,7 @@ export interface Dashboard extends Omit<raw.Dashboard, 'templating'> {
   bucket?: {
     enabled: boolean;
     width: number;
-    unit: ('s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y');
+    unit: 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';
   };
 }
 

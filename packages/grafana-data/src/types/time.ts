@@ -21,7 +21,7 @@ export interface TimeRange {
 export interface TimeBucket {
   enabled: boolean;
   width: number;
-  unit: ('s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y');
+  unit: 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';
 }
 
 /**
