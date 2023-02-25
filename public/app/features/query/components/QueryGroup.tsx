@@ -33,7 +33,7 @@ import { QueryEditorRows } from './QueryEditorRows';
 import { QueryGroupOptionsEditor } from './QueryGroupOptions';
 import { SavedQueryPicker } from './SavedQueryPicker';
 
-interface Props {
+export interface Props {
   queryRunner: PanelQueryRunner;
   options: QueryGroupOptions;
   onOpenQueryInspector?: () => void;
@@ -96,6 +96,7 @@ export class QueryGroup extends PureComponent<Props, State> {
     try {
       const ds = await this.dataSourceSrv.get(options.dataSource);
       const dsSettings = this.dataSourceSrv.getInstanceSettings(options.dataSource);
+
       const defaultDataSource = await this.dataSourceSrv.get();
       const datasource = ds.getRef();
       const queries = options.queries.map((q) => ({
@@ -292,6 +293,7 @@ export class QueryGroup extends PureComponent<Props, State> {
                   icon="question-circle"
                   title="Open data source help"
                   onClick={this.onOpenHelp}
+                  data-testid="query-tab-help-button"
                 />
               </div>
               <div className={styles.dataSourceRowItemOptions}>
@@ -377,7 +379,6 @@ export class QueryGroup extends PureComponent<Props, State> {
   renderQueries(dsSettings: DataSourceInstanceSettings) {
     const { onRunQueries, timeBucket } = this.props;
     const { data, queries } = this.state;
-
     if (isSharedDashboardQuery(dsSettings.name)) {
       return (
         <DashboardQueryEditor
@@ -432,6 +433,7 @@ export class QueryGroup extends PureComponent<Props, State> {
             onClick={this.onAddQueryClick}
             variant="secondary"
             aria-label={selectors.components.QueryTab.addQuery}
+            data-testid="query-tab-add-query"
           >
             Query
           </Button>
@@ -442,6 +444,7 @@ export class QueryGroup extends PureComponent<Props, State> {
             onClick={this.onAddExpressionClick}
             variant="secondary"
             className={styles.expressionButton}
+            data-testid="query-tab-add-expression"
           >
             <span>Expression&nbsp;</span>
           </Button>
