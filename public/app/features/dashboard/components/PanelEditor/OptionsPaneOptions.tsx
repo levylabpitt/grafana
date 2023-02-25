@@ -12,6 +12,7 @@ import { OptionsPaneCategoryDescriptor } from './OptionsPaneCategoryDescriptor';
 import { getFieldOverrideCategories } from './getFieldOverrideElements';
 import { getLibraryPanelOptionsCategory } from './getLibraryPanelOptions';
 import { getPanelFrameCategory } from './getPanelFrameOptions';
+import { getTimeBucketOptions } from './getTimeBucketOptions';
 import { getVisualizationOptions } from './getVisualizationOptions';
 import { OptionSearchEngine } from './state/OptionSearchEngine';
 import { getRecentOptions } from './state/getRecentOptions';
@@ -23,8 +24,13 @@ export const OptionsPaneOptions: React.FC<OptionPaneRenderProps> = (props) => {
   const [listMode, setListMode] = useState(OptionFilter.All);
   const styles = useStyles2(getStyles);
 
-  const [panelFrameOptions, vizOptions, libraryPanelOptions] = useMemo(
-    () => [getPanelFrameCategory(props), getVisualizationOptions(props), getLibraryPanelOptionsCategory(props)],
+  const [panelFrameOptions, vizOptions, libraryPanelOptions, timeBucketOptions] = useMemo(
+    () => [
+      getPanelFrameCategory(props),
+      getVisualizationOptions(props),
+      getLibraryPanelOptionsCategory(props),
+      getTimeBucketOptions(props),
+    ],
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [panel.configRev, props.data, props.instanceState, searchQuery]
@@ -41,8 +47,8 @@ export const OptionsPaneOptions: React.FC<OptionPaneRenderProps> = (props) => {
   const optionRadioFilters = useMemo(getOptionRadioFilters, []);
 
   const allOptions = isPanelModelLibraryPanel(panel)
-    ? [libraryPanelOptions, panelFrameOptions, ...vizOptions]
-    : [panelFrameOptions, ...vizOptions];
+    ? [libraryPanelOptions, panelFrameOptions, timeBucketOptions, ...vizOptions]
+    : [panelFrameOptions, timeBucketOptions, ...vizOptions];
 
   if (isSearching) {
     mainBoxElements.push(renderSearchHits(allOptions, justOverrides, searchQuery));
@@ -64,6 +70,7 @@ export const OptionsPaneOptions: React.FC<OptionPaneRenderProps> = (props) => {
         }
         // Panel frame options second
         mainBoxElements.push(panelFrameOptions.render());
+        mainBoxElements.push(timeBucketOptions.render());
         // If angular add those options next
         if (props.plugin.angularPanelCtrl) {
           mainBoxElements.push(

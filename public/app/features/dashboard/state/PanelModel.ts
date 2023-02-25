@@ -13,6 +13,7 @@ import {
   PanelPlugin,
   PanelPluginDataSupport,
   ScopedVars,
+  TimeBucket,
   urlUtil,
   PanelModel as IPanelModel,
   DataSourceRef,
@@ -118,6 +119,7 @@ const mustKeepProps: { [str: string]: boolean } = {
   getDisplayTitle: true,
   configRev: true,
   key: true,
+  timeBucket: true,
 };
 
 const defaults: any = {
@@ -157,6 +159,8 @@ export class PanelModel implements DataConfigSource, IPanelModel {
   thresholds?: any;
   pluginVersion?: string;
   savedQueryLink: SavedQueryLink | null = null; // Used by the experimental feature queryLibrary
+
+  timeBucket?: TimeBucket;
 
   snapshotData?: DataFrameDTO[];
   timeFrom?: any;
