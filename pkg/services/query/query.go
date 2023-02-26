@@ -301,25 +301,28 @@ func (s *Service) parseMetricRequest(ctx context.Context, user *user.SignedInUse
 
 		type TimeBucket struct {
 			Enabled bool
-			Width   int
+			Width   string
 			Unit    string
 		}
 
-		var tb TimeBucket = TimeBucket{
+		tb := TimeBucket{
 			Enabled: query.Get("timeBucketEnabled").MustBool(false),
-			Width:   query.Get("timeBucketWidth").MustInt(5),
+			Width:   query.Get("timeBucketWidth").MustString("5"),
 			Unit:    query.Get("timeBucketUnit").MustString("m"),
 		}
-		rawSql, _ := query.Get("rawSql").String()
+		rawSql, err := query.Get("rawSql").String()
+		if err != nil {
+			return nil, err
+		}
+
 		if tb.Enabled {
-			var timeGroupStr string = "$__timeGroup(time AT TIME ZONE 'America/New_York', '" + fmt.Sprintf("%v", tb.Width) + tb.Unit + "') AS"
+			timeGroupStr := "$__timeGroup(time AT TIME ZONE 'America/New_York', '" + tb.Width + tb.Unit + "') AS"
 			newRawSql := strings.Replace(rawSql, "time AS", timeGroupStr, 1)
 			query.Set("rawSql", newRawSql)
 		} else {
 			newRawSql := strings.Replace(rawSql, "time AS", "time AT TIME ZONE 'America/New_York' AS", 1)
 			query.Set("rawSql", newRawSql)
 		}
-		fmt.Println(rawSql)
 
 		req.parsedQueries[ds.UID] = append(req.parsedQueries[ds.UID], parsedQuery{
 			datasource: ds,
