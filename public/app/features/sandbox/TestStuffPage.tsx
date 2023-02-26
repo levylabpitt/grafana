@@ -2,7 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { useObservable } from 'react-use';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
-import { ApplyFieldOverrideOptions, dateMath, FieldColorModeId, NavModelItem, PanelData } from '@grafana/data';
+import {
+  ApplyFieldOverrideOptions,
+  dateMath,
+  FieldColorModeId,
+  NavModelItem,
+  PanelData,
+  TimeBucket,
+} from '@grafana/data';
 import { getPluginExtensions } from '@grafana/runtime';
 import { DataTransformerConfig } from '@grafana/schema';
 import { Button, HorizontalGroup, LinkButton, Table } from '@grafana/ui';
@@ -27,12 +34,14 @@ export const TestStuffPage = () => {
 
   const onRunQueries = () => {
     const timeRange = { from: 'now-1h', to: 'now' };
+    const timeBucket = { enabled: false, width: 5, unit: 'm' } as TimeBucket;
 
     queryRunner.run({
       queries: queryOptions.queries,
       datasource: queryOptions.dataSource,
       timezone: 'browser',
       timeRange: { from: dateMath.parse(timeRange.from)!, to: dateMath.parse(timeRange.to)!, raw: timeRange },
+      timeBucket: timeBucket,
       maxDataPoints: queryOptions.maxDataPoints ?? 100,
       minInterval: queryOptions.minInterval,
     });

@@ -1,5 +1,4 @@
 import { css } from '@emotion/css';
-import { uuid4 } from '@sentry/utils';
 import React, { PureComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';

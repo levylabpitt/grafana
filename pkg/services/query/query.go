@@ -310,12 +310,16 @@ func (s *Service) parseMetricRequest(ctx context.Context, user *user.SignedInUse
 			Width:   query.Get("timeBucketWidth").MustInt(5),
 			Unit:    query.Get("timeBucketUnit").MustString("m"),
 		}
+		rawSql, _ := query.Get("rawSql").String()
 		if tb.Enabled {
-			rawSql, _ := query.Get("rawSql").String()
-			var timeGroupStr string = "$__timeGroup(time AT TIME ZONE 'America/New_York' , '" + fmt.Sprintf("%v", tb.Width) + tb.Unit + "')"
+			var timeGroupStr string = "$__timeGroup(time AT TIME ZONE 'America/New_York', '" + fmt.Sprintf("%v", tb.Width) + tb.Unit + "') AS"
 			newRawSql := strings.Replace(rawSql, "time AS", timeGroupStr, 1)
 			query.Set("rawSql", newRawSql)
+		} else {
+			newRawSql := strings.Replace(rawSql, "time AS", "time AT TIME ZONE 'America/New_York' AS", 1)
+			query.Set("rawSql", newRawSql)
 		}
+		fmt.Println(rawSql)
 
 		req.parsedQueries[ds.UID] = append(req.parsedQueries[ds.UID], parsedQuery{
 			datasource: ds,

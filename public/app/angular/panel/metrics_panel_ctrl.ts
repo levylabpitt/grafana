@@ -198,6 +198,7 @@ class MetricsPanelCtrl extends PanelCtrl {
       timezone: this.dashboard.getTimezone(),
       timeInfo: this.timeInfo,
       timeRange: this.range,
+      timeBucket: { enabled: false, width: 5, unit: 'm' },
       maxDataPoints: panel.maxDataPoints || this.width,
       minInterval: panel.interval,
       publicDashboardAccessToken: this.dashboard.meta.publicDashboardAccessToken,
