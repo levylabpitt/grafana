@@ -17,14 +17,7 @@ interface Props extends QueryEditorProps<SqlDatasource, SQLQuery, SQLOptions> {
   queryHeaderProps?: Pick<QueryHeaderProps, 'isDatasetSelectorHidden'>;
 }
 
-export function SqlQueryEditor({
-  datasource,
-  query,
-  onChange,
-  onRunQuery,
-  range,
-  queryHeaderProps,
-}: Props) {
+export function SqlQueryEditor({ datasource, query, onChange, onRunQuery, range, queryHeaderProps }: Props) {
   const [isQueryRunnable, setIsQueryRunnable] = useState(true);
   const db = datasource.getDB();
   const { loading, error } = useAsync(async () => {
@@ -35,16 +28,6 @@ export function SqlQueryEditor({
     };
   }, [datasource]);
 
-  // if (timeBucket?.enabled && query.rawSql) {
-  //   query.rawSql = query.rawSql.replace('time AS', `$__timeGroup() AS`);
-  //   query.rawSql = query.rawSql.replace(
-  //     / *\$__timeGroup\([^)]*\) */g,
-  //     ` $__timeGroup(time AT TIME ZONE 'America/New_York', '${timeBucket.width}${timeBucket.unit}')`
-  //   );
-  // }
-  if (query.rawSql) {
-    query.rawSql = query.rawSql.replace('time AS', `time AT TIME ZONE 'America/New_York' AS`);
-  }
   const queryWithDefaults = applyQueryDefaults(query);
   const [queryRowFilter, setQueryRowFilter] = useState<QueryRowFilter>({
     filter: !!queryWithDefaults.sql?.whereString,

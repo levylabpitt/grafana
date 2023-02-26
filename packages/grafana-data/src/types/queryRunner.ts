@@ -4,7 +4,7 @@ import { ScopedVars } from './ScopedVars';
 import { DataSourceApi } from './datasource';
 import { PanelData } from './panel';
 import { DataQuery, DataSourceRef } from './query';
-import { TimeRange, TimeZone } from './time';
+import { TimeBucket, TimeRange, TimeZone } from './time';
 
 /**
  * Describes the options used when triggering a query via the {@link QueryRunner}.
@@ -18,6 +18,7 @@ export interface QueryRunnerOptions {
   dashboardId?: number;
   timezone: TimeZone;
   timeRange: TimeRange;
+  timeBucket: TimeBucket;
   timeInfo?: string; // String description of time range for display
   maxDataPoints: number;
   minInterval: string | undefined | null;

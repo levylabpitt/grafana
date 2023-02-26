@@ -38,6 +38,7 @@ export class QueryRunner implements QueryRunnerSrv {
     const {
       queries,
       timezone,
+      timeBucket,
       datasource,
       panelId,
       app,
@@ -62,6 +63,9 @@ export class QueryRunner implements QueryRunnerSrv {
       panelId,
       dashboardId,
       range: timeRange,
+      timeBucketEnabled: timeBucket.enabled,
+      timeBucketWidth: timeBucket.width,
+      timeBucketUnit: timeBucket.unit,
       timeInfo,
       interval: '',
       intervalMs: 0,

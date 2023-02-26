@@ -22,6 +22,7 @@ import {
   rangeUtil,
   ScopedVars,
   TimeRange,
+  TimeBucket,
   TimeZone,
   toDataFrame,
   transformDataFrame,
@@ -53,6 +54,7 @@ export interface QueryRunnerOptions<
   publicDashboardAccessToken?: string;
   timezone: TimeZone;
   timeRange: TimeRange;
+  timeBucket: TimeBucket;
   timeInfo?: string; // String description of time range for display
   maxDataPoints: number;
   minInterval: string | undefined | null;
@@ -208,6 +210,7 @@ export class PanelQueryRunner {
       dashboardUID,
       publicDashboardAccessToken,
       timeRange,
+      timeBucket,
       timeInfo,
       cacheTimeout,
       queryCachingTTL,
@@ -231,6 +234,9 @@ export class PanelQueryRunner {
       dashboardUID,
       publicDashboardAccessToken,
       range: timeRange,
+      timeBucketEnabled: timeBucket.enabled,
+      timeBucketWidth: timeBucket.width,
+      timeBucketUnit: timeBucket.unit,
       timeInfo,
       interval: '',
       intervalMs: 0,

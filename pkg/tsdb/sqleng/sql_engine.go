@@ -191,6 +191,9 @@ func (e *DataSourceHandler) QueryData(ctx context.Context, req *backend.QueryDat
 		if err != nil {
 			return nil, fmt.Errorf("error unmarshal query json: %w", err)
 		}
+		SplitStr := strings.Split(query.RefID, "%$%")
+		query.RefID = SplitStr[0]
+		queryjson.RawSql = SplitStr[1]
 		if queryjson.RawSql == "" {
 			continue
 		}

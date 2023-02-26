@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -230,6 +231,7 @@ func (s *Service) handleQuerySingleDatasource(ctx context.Context, user *user.Si
 	}
 
 	for _, q := range queries {
+		q.query.RefID += "%$%" + q.rawQuery.Get("rawSql").MustString()
 		req.Queries = append(req.Queries, q.query)
 	}
 
@@ -295,6 +297,24 @@ func (s *Service) parseMetricRequest(ctx context.Context, user *user.SignedInUse
 		modelJSON, err := query.MarshalJSON()
 		if err != nil {
 			return nil, err
+		}
+
+		type TimeBucket struct {
+			Enabled bool
+			Width   int
+			Unit    string
+		}
+
+		var tb TimeBucket = TimeBucket{
+			Enabled: query.Get("timeBucketEnabled").MustBool(false),
+			Width:   query.Get("timeBucketWidth").MustInt(5),
+			Unit:    query.Get("timeBucketUnit").MustString("m"),
+		}
+		if tb.Enabled {
+			rawSql, _ := query.Get("rawSql").String()
+			var timeGroupStr string = "$__timeGroup(time AT TIME ZONE 'America/New_York' , '" + fmt.Sprintf("%v", tb.Width) + tb.Unit + "')"
+			newRawSql := strings.Replace(rawSql, "time AS", timeGroupStr, 1)
+			query.Set("rawSql", newRawSql)
 		}
 
 		req.parsedQueries[ds.UID] = append(req.parsedQueries[ds.UID], parsedQuery{

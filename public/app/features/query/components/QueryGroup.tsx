@@ -81,6 +81,7 @@ export class QueryGroup extends PureComponent<Props, State> {
       state: LoadingState.NotStarted,
       series: [],
       timeRange: getDefaultTimeRange(),
+      timeBucket: this.props.options.timeBucket,
     },
   };
 
@@ -127,6 +128,7 @@ export class QueryGroup extends PureComponent<Props, State> {
   }
 
   onPanelDataUpdate(data: PanelData) {
+    data.timeBucket = this.props.options.timeBucket;
     this.setState({ data });
   }
 

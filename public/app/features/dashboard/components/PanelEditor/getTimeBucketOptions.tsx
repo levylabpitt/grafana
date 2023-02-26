@@ -35,8 +35,8 @@ export function getTimeBucketOptions(props: OptionPaneRenderProps): OptionsPaneC
             <Switch
               id="enable-time-buckets"
               value={panel.timeBucket?.enabled}
-              onBlur={() =>
-                onPanelConfigChange('timeBucket', { ...panel.timeBucket, enabled: !panel.timeBucket?.enabled })
+              onChange={(e) =>
+                onPanelConfigChange('timeBucket', { ...panel.timeBucket, enabled: e.currentTarget.checked })
               }
             />
           );
