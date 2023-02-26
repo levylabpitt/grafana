@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
 import React, { FC, FormEvent, MouseEvent, useState } from 'react';
 
-import { dateMath, dateTime, getDefaultTimeRange, GrafanaTheme2, TimeRange, TimeBucket, TimeZone } from '@grafana/data';
+import { dateMath, dateTime, getDefaultTimeRange, GrafanaTheme2, TimeRange, TimeZone } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 
 import { stylesFactory } from '../../themes';
@@ -105,8 +105,6 @@ export const TimeRangeInput: FC<TimeRangeInputProps> = ({
             timeZone={timeZone}
             value={isValidTimeRange(value) ? value : getDefaultTimeRange()}
             onChange={onRangeChange}
-            timeBucket={{ enabled: false, width: 5, unit: 'm' } as TimeBucket}
-            onChangeTimeBucket={() => {}}
             quickOptions={quickOptions}
             onChangeTimeZone={onChangeTimeZone}
             className={styles.content}

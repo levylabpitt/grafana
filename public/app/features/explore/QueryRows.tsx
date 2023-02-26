@@ -104,7 +104,6 @@ export const QueryRows = ({ exploreId }: Props) => {
       app={CoreApp.Explore}
       history={history}
       eventBus={eventBridge}
-      timeBucket={{ enabled: false, width: 5, unit: 'm' }}
     />
   );
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Unsubscribable } from 'rxjs';
 
-import { dateMath, TimeRange, TimeBucket, TimeZone } from '@grafana/data';
+import { dateMath, TimeRange, TimeZone } from '@grafana/data';
 import { TimeRangeUpdatedEvent } from '@grafana/runtime';
 import { defaultIntervals, RefreshPicker } from '@grafana/ui';
 import { TimePickerWithHistory } from 'app/core/components/TimePicker/TimePickerWithHistory';
@@ -62,11 +62,6 @@ export class DashNavTimeControls extends Component<Props> {
     getTimeSrv().setTime(nextRange);
   };
 
-  onChangeTimeBucket = (timeBucket: TimeBucket) => {
-    this.props.dashboard.bucket = timeBucket;
-    this.forceUpdate();
-  };
-
   onChangeTimeZone = (timeZone: TimeZone) => {
     this.props.dashboard.timezone = timeZone;
     this.props.onChangeTimeZone(timeZone);
@@ -88,7 +83,6 @@ export class DashNavTimeControls extends Component<Props> {
     const intervals = getTimeSrv().getValidIntervals(refresh_intervals || defaultIntervals);
 
     const timePickerValue = getTimeSrv().timeRange();
-    const timeBucket = dashboard.bucket;
     const timeZone = dashboard.getTimezone();
     const fiscalYearStartMonth = dashboard.fiscalYearStartMonth;
     const hideIntervalPicker = dashboard.panelInEdit?.isEditing;
@@ -98,8 +92,6 @@ export class DashNavTimeControls extends Component<Props> {
         <TimePickerWithHistory
           value={timePickerValue}
           onChange={this.onChangeTimePicker}
-          timeBucket={timeBucket ? timeBucket : { enabled: false, width: 5, unit: 'm' }}
-          onChangeTimeBucket={this.onChangeTimeBucket}
           timeZone={timeZone}
           fiscalYearStartMonth={fiscalYearStartMonth}
           onMoveBackward={this.onMoveBack}

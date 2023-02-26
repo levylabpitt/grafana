@@ -60,7 +60,7 @@ export const PanelEditorTabs: FC<PanelEditorTabsProps> = React.memo(({ panel, da
       </TabsBar>
       <TabContent className={styles.tabContent}>
         {activeTab.id === PanelEditorTabId.Query && (
-          <PanelEditorQueries panel={panel} queries={panel.targets} timeBucket={dashboard.bucket} />
+          <PanelEditorQueries panel={panel} queries={panel.targets} />
         )}
         {activeTab.id === PanelEditorTabId.Alert && <AlertTabIndex panel={panel} dashboard={dashboard} />}
         {activeTab.id === PanelEditorTabId.Transform && <TransformationsEditor panel={panel} />}

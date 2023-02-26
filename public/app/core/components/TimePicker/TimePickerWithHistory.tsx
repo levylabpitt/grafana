@@ -32,8 +32,6 @@ export const TimePickerWithHistory = (props: TimeRangePickerProps) => {
               onAppendToHistory(value, values, onSaveToStore);
               props.onChange(value);
             }}
-            timeBucket={props.timeBucket}
-            onChangeTimeBucket={props.onChangeTimeBucket}
           />
         );
       }}

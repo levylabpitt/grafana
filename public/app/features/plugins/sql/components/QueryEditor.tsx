@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAsync } from 'react-use';
 
-import { QueryEditorProps, TimeBucket } from '@grafana/data';
+import { QueryEditorProps } from '@grafana/data';
 import { EditorMode, Space } from '@grafana/experimental';
 
 import { SqlDatasource } from '../datasource/SqlDatasource';
@@ -15,7 +15,6 @@ import { VisualEditor } from './visual-query-builder/VisualEditor';
 
 interface Props extends QueryEditorProps<SqlDatasource, SQLQuery, SQLOptions> {
   queryHeaderProps?: Pick<QueryHeaderProps, 'isDatasetSelectorHidden'>;
-  timeBucket?: TimeBucket;
 }
 
 export function SqlQueryEditor({
@@ -25,7 +24,6 @@ export function SqlQueryEditor({
   onRunQuery,
   range,
   queryHeaderProps,
-  timeBucket,
 }: Props) {
   const [isQueryRunnable, setIsQueryRunnable] = useState(true);
   const db = datasource.getDB();
@@ -37,13 +35,14 @@ export function SqlQueryEditor({
     };
   }, [datasource]);
 
-  if (timeBucket?.enabled && query.rawSql) {
-    query.rawSql = query.rawSql.replace('time AS', `$__timeGroup() AS`);
-    query.rawSql = query.rawSql.replace(
-      / *\$__timeGroup\([^)]*\) */g,
-      ` $__timeGroup(time AT TIME ZONE 'America/New_York', '${timeBucket.width}${timeBucket.unit}')`
-    );
-  } else if (query.rawSql) {
+  // if (timeBucket?.enabled && query.rawSql) {
+  //   query.rawSql = query.rawSql.replace('time AS', `$__timeGroup() AS`);
+  //   query.rawSql = query.rawSql.replace(
+  //     / *\$__timeGroup\([^)]*\) */g,
+  //     ` $__timeGroup(time AT TIME ZONE 'America/New_York', '${timeBucket.width}${timeBucket.unit}')`
+  //   );
+  // }
+  if (query.rawSql) {
     query.rawSql = query.rawSql.replace('time AS', `time AT TIME ZONE 'America/New_York' AS`);
   }
   const queryWithDefaults = applyQueryDefaults(query);

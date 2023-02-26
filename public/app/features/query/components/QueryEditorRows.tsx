@@ -9,7 +9,6 @@ import {
   EventBusExtended,
   HistoryItem,
   PanelData,
-  TimeBucket,
 } from '@grafana/data';
 import { getDataSourceSrv, reportInteraction } from '@grafana/runtime';
 
@@ -35,7 +34,6 @@ export interface Props {
   onQueryCopied?: () => void;
   onQueryRemoved?: () => void;
   onQueryToggled?: (queryStatus?: boolean | undefined) => void;
-  timeBucket: TimeBucket;
 }
 
 export class QueryEditorRows extends PureComponent<Props> {
@@ -146,7 +144,6 @@ export class QueryEditorRows extends PureComponent<Props> {
       onQueryCopied,
       onQueryRemoved,
       onQueryToggled,
-      timeBucket,
     } = this.props;
 
     return (
@@ -181,7 +178,6 @@ export class QueryEditorRows extends PureComponent<Props> {
                       app={app}
                       history={history}
                       eventBus={eventBus}
-                      timeBucket={timeBucket ? timeBucket : { enabled: false, width: 5, unit: 'm' }}
                     />
                   );
                 })}

@@ -176,7 +176,6 @@ export const QueryWrapper: FC<Props> = ({
           ) : null
         }
         hideDisableQuery={true}
-        timeBucket={{ enabled: false, width: 5, unit: 'm' }}
       />
     </div>
   );

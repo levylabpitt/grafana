@@ -102,7 +102,6 @@ export const QueryEditor = ({ savedQuery, onSavedQueryChange }: Props) => {
         onAddQuery={onAddQueryClick}
         onRunQueries={() => {}}
         data={data}
-        timeBucket={{ enabled: false, width: 5, unit: 'm' }}
       />
       <HorizontalGroup spacing="md" align="flex-start">
         {

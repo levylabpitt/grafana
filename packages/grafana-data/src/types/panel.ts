@@ -15,7 +15,7 @@ import { FieldConfigSource } from './fieldOverrides';
 import { IconName } from './icon';
 import { OptionEditorConfig } from './options';
 import { PluginMeta } from './plugin';
-import { AbsoluteTimeRange, TimeRange, TimeZone } from './time';
+import { AbsoluteTimeRange, TimeRange, TimeBucket, TimeZone } from './time';
 import { DataTransformerConfig } from './transformations';
 
 export type InterpolateFunction = (value: string, scopedVars?: ScopedVars, format?: string | Function) => string;
@@ -61,6 +61,8 @@ export interface PanelData {
 
   /** Contains the range from the request or a shifted time range if a request uses relative time */
   timeRange: TimeRange;
+
+  timeBucket?: TimeBucket;
 }
 
 export interface PanelProps<T = any> {

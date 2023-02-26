@@ -13,7 +13,6 @@ export function QueryEditor(props: QueryEditorProps<PostgresDatasource, SQLQuery
     <SqlQueryEditor
       {...props}
       queryHeaderProps={queryHeaderProps}
-      timeBucket={props.timeBucket ? props.timeBucket : { enabled: false, width: 5, unit: 'm' }}
     />
   );
 }

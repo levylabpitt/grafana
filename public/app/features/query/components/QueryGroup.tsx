@@ -10,7 +10,6 @@ import {
   getDefaultTimeRange,
   LoadingState,
   PanelData,
-  TimeBucket,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { DataSourcePicker, getDataSourceSrv } from '@grafana/runtime';
@@ -39,7 +38,6 @@ export interface Props {
   onOpenQueryInspector?: () => void;
   onRunQueries: () => void;
   onOptionsChange: (options: QueryGroupOptions) => void;
-  timeBucket?: TimeBucket;
 }
 
 interface State {
@@ -377,7 +375,7 @@ export class QueryGroup extends PureComponent<Props, State> {
   };
 
   renderQueries(dsSettings: DataSourceInstanceSettings) {
-    const { onRunQueries, timeBucket } = this.props;
+    const { onRunQueries } = this.props;
     const { data, queries } = this.state;
     if (isSharedDashboardQuery(dsSettings.name)) {
       return (
@@ -399,7 +397,6 @@ export class QueryGroup extends PureComponent<Props, State> {
           onAddQuery={this.onAddQuery}
           onRunQueries={onRunQueries}
           data={data}
-          timeBucket={timeBucket ? timeBucket : { enabled: false, width: 5, unit: 'm' }}
         />
       </div>
     );

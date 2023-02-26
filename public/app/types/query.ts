@@ -1,4 +1,4 @@
-import { DataQuery, DataSourceRef } from '@grafana/data';
+import { DataQuery, DataSourceRef, TimeBucket } from '@grafana/data';
 
 export interface QueryGroupOptions {
   queries: DataQuery[];
@@ -13,6 +13,7 @@ export interface QueryGroupOptions {
     shift?: string | null;
     hide?: boolean;
   };
+  timeBucket?: TimeBucket;
 }
 
 export interface QueryGroupDataSource extends DataSourceRef {

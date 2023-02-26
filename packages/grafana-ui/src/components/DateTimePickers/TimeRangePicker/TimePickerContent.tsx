@@ -2,18 +2,15 @@ import { css, cx } from '@emotion/css';
 import React, { memo, useMemo, useState } from 'react';
 
 import {
-  SelectableValue,
   GrafanaTheme2,
   isDateTime,
   rangeUtil,
   RawTimeRange,
   TimeOption,
   TimeRange,
-  TimeBucket,
   TimeZone,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { Field, Switch, Input, Select } from '@grafana/ui';
 
 import { FilterInput } from '../..';
 import { stylesFactory, useTheme2 } from '../../../themes';
@@ -46,21 +43,12 @@ interface Props {
   widthOverride?: number;
 }
 
-interface PropsWithTimeBucket extends Props {
-  timeBucket: TimeBucket;
-  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
-}
-export interface PropsWithScreenSize extends PropsWithTimeBucket {
+export interface PropsWithScreenSize extends Props {
   isFullscreen: boolean;
 }
 
-interface FormProps extends Omit<PropsWithTimeBucket, 'history'> {
+interface FormProps extends Omit<Props, 'history'> {
   historyOptions?: TimeOption[];
-}
-
-interface TimeBucketEditorProps {
-  timeBucket: TimeBucket;
-  onChangeTimeBucket: (timeBucket: TimeBucket) => void;
 }
 
 export const TimePickerContentWithScreenSize: React.FC<PropsWithScreenSize> = (props) => {
@@ -135,52 +123,11 @@ export const TimePickerContentWithScreenSize: React.FC<PropsWithScreenSize> = (p
   );
 };
 
-export const TimePickerContent = (props: PropsWithTimeBucket) => {
+export const TimePickerContent = (props: Props) => {
   const { widthOverride } = props;
   const theme = useTheme2();
   const isFullscreen = (widthOverride || window.innerWidth) >= theme.breakpoints.values.lg;
   return <TimePickerContentWithScreenSize {...props} isFullscreen={isFullscreen} />;
-};
-
-const TimeBucketEditor = (props: TimeBucketEditorProps) => {
-  let { timeBucket, onChangeTimeBucket } = props;
-  const units: Array<SelectableValue<'s' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y'>> = [
-    { label: 'Seconds', value: 's' },
-    { label: 'Minutes', value: 'm' },
-    { label: 'Hours', value: 'h' },
-    { label: 'Days', value: 'd' },
-    { label: 'Weeks', value: 'w' },
-    { label: 'Months', value: 'M' },
-    { label: 'Years', value: 'y' },
-  ];
-  return (
-    <Field label="Enable time buckets" style={{ paddingTop: '18px' }}>
-      <div style={{ display: 'flex', columnGap: '8px' }}>
-        <div style={{ display: 'flex', alignSelf: 'center' }}>
-          <Switch
-            id="enable-time-buckets"
-            value={timeBucket.enabled}
-            onChange={() => onChangeTimeBucket({ ...timeBucket, enabled: !timeBucket.enabled })}
-          />
-        </div>
-        <Input
-          type="number"
-          defaultValue={timeBucket.width}
-          placeholder="Width"
-          onChange={(e) => onChangeTimeBucket({ ...timeBucket, width: parseInt(e.currentTarget.value || '5', 10) })}
-        />
-        <Select
-          aria-label="Unit"
-          isSearchable={true}
-          value={timeBucket.unit}
-          options={units}
-          placeholder="Unit"
-          menuShouldPortal={false}
-          onChange={(e: SelectableValue) => onChangeTimeBucket({ ...timeBucket, unit: e.value })}
-        />
-      </div>
-    </Field>
-  );
 };
 
 const NarrowScreenForm = (props: FormProps) => {
@@ -260,18 +207,13 @@ const FullScreenForm: React.FC<FormProps> = (props) => {
           isReversed={isReversed}
         />
       </div>
-      <div className={styles.container}>
-        <TimeBucketEditor timeBucket={props.timeBucket} onChangeTimeBucket={props.onChangeTimeBucket} />
-      </div>
       {props.showHistory && (
-        <div className={styles.recent} style={{ paddingTop: '-32px', marginTop: '-32px' }}>
-          <TimeRangeList
-            title={t('time-picker.absolute.recent-title', 'Recently used absolute ranges')}
-            options={historyOptions || []}
-            onChange={onChangeTimeOption}
-            placeholderEmpty={<EmptyRecentList />}
-          />
-        </div>
+        <TimeRangeList
+          title={t('time-picker.absolute.recent-title', 'Recently used absolute ranges')}
+          options={historyOptions || []}
+          onChange={onChangeTimeOption}
+          placeholderEmpty={<EmptyRecentList />}
+        />
       )}
     </>
   );

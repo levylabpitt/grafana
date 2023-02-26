@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { DataQuery, getDataSourceRef, TimeBucket } from '@grafana/data';
+import { DataQuery, getDataSourceRef } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
 import { getDatasourceSrv } from 'app/features/plugins/datasource_srv';
 import { QueryGroup } from 'app/features/query/components/QueryGroup';
@@ -13,7 +13,6 @@ interface Props {
   panel: PanelModel;
   /** Added here to make component re-render when queries change from outside */
   queries: DataQuery[];
-  timeBucket: TimeBucket;
 }
 
 export class PanelEditorQueries extends PureComponent<Props> {
@@ -44,6 +43,7 @@ export class PanelEditorQueries extends PureComponent<Props> {
         shift: panel.timeShift,
         hide: panel.hideTimeOverride,
       },
+      timeBucket: panel.timeBucket,
     };
   }
 
@@ -100,7 +100,6 @@ export class PanelEditorQueries extends PureComponent<Props> {
         onRunQueries={this.onRunQueries}
         onOpenQueryInspector={this.onOpenQueryInspector}
         onOptionsChange={this.onOptionsChange}
-        timeBucket={this.props.timeBucket}
       />
     );
   }
