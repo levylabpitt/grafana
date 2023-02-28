@@ -52,6 +52,7 @@ export function getTimeBucketOptions(props: OptionPaneRenderProps): OptionsPaneC
             <Switch
               id="automated-time-buckets"
               value={panel.timeBucket?.automated}
+              disabled={!panel.timeBucket?.enabled}
               onChange={(e) =>
                 onPanelConfigChange('timeBucket', { ...panel.timeBucket, automated: e.currentTarget.checked })
               }
@@ -70,6 +71,7 @@ export function getTimeBucketOptions(props: OptionPaneRenderProps): OptionsPaneC
               type="number"
               id="TimeBucketWidth"
               defaultValue={5}
+              disabled={!panel.timeBucket?.enabled || panel.timeBucket?.automated}
               onBlur={(e) => onPanelConfigChange('timeBucket', { ...panel.timeBucket, width: e.currentTarget.value })}
             />
           );
@@ -83,11 +85,10 @@ export function getTimeBucketOptions(props: OptionPaneRenderProps): OptionsPaneC
         render: function renderTimeBucketUnit() {
           return (
             <Select
-              isSearchable={true}
               value={panel.timeBucket?.unit}
               options={units}
               defaultValue={'m'}
-              menuShouldPortal={false}
+              disabled={!panel.timeBucket?.enabled || panel.timeBucket?.automated}
               onChange={(e: SelectableValue) =>
                 onPanelConfigChange('timeBucket', { ...panel.timeBucket, unit: e.value })
               }
