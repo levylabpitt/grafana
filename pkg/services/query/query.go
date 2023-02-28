@@ -300,14 +300,14 @@ func (s *Service) parseMetricRequest(ctx context.Context, user *user.SignedInUse
 		}
 
 		type TimeBucket struct {
-			Automatic bool
+			Automated bool
 			Enabled   bool
 			Width     string
 			Unit      string
 		}
 
 		tb := TimeBucket{
-			Automatic: query.Get("timeBucketAutomatic").MustBool(true),
+			Automated: query.Get("timeBucketAutomated").MustBool(true),
 			Enabled:   query.Get("timeBucketEnabled").MustBool(false),
 			Width:     query.Get("timeBucketWidth").MustString("5"),
 			Unit:      query.Get("timeBucketUnit").MustString("m"),
@@ -317,7 +317,7 @@ func (s *Service) parseMetricRequest(ctx context.Context, user *user.SignedInUse
 			return nil, err
 		}
 
-		if tb.Enabled && tb.Automatic {
+		if tb.Enabled && tb.Automated {
 			timeGroupStr := "$__timeGroup(time AT TIME ZONE 'America/New_York', $__interval) AS"
 			newRawSql := strings.Replace(rawSql, "time AS", timeGroupStr, 1)
 			query.Set("rawSql", newRawSql)
