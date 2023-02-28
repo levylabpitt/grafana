@@ -45,6 +45,23 @@ export function getTimeBucketOptions(props: OptionPaneRenderProps): OptionsPaneC
     )
     .addItem(
       new OptionsPaneItemDescriptor({
+        title: 'Automated',
+        value: panel.timeBucket?.automated,
+        render: function renderTimeBucketAutomated() {
+          return (
+            <Switch
+              id="automated-time-buckets"
+              value={panel.timeBucket?.automated}
+              onChange={(e) =>
+                onPanelConfigChange('timeBucket', { ...panel.timeBucket, automated: e.currentTarget.checked })
+              }
+            />
+          );
+        },
+      })
+    )
+    .addItem(
+      new OptionsPaneItemDescriptor({
         title: 'Width',
         value: panel.timeBucket?.width,
         render: function renderTimeBucketWidth() {

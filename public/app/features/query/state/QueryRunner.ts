@@ -63,6 +63,7 @@ export class QueryRunner implements QueryRunnerSrv {
       panelId,
       dashboardId,
       range: timeRange,
+      timeBucketAutomated: timeBucket.automated,
       timeBucketEnabled: timeBucket.enabled,
       timeBucketWidth: timeBucket.width,
       timeBucketUnit: timeBucket.unit,

@@ -234,6 +234,7 @@ export class PanelQueryRunner {
       dashboardUID,
       publicDashboardAccessToken,
       range: timeRange,
+      timeBucketAutomated: timeBucket.automated,
       timeBucketEnabled: timeBucket.enabled,
       timeBucketWidth: timeBucket.width,
       timeBucketUnit: timeBucket.unit,

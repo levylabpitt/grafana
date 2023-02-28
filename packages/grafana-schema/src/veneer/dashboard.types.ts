@@ -33,11 +33,6 @@ export interface Dashboard extends Omit<raw.Dashboard, 'templating'> {
   templating?: {
     list?: VariableModel[];
   };
-  bucket?: {
-    enabled: boolean;
-    width: number;
-    unit: 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';
-  };
 }
 
 export interface FieldConfig<TOptions = Record<string, unknown>> extends raw.FieldConfig {

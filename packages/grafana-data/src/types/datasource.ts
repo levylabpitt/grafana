@@ -492,6 +492,7 @@ export interface DataQueryRequest<TQuery extends DataQuery = DataQuery> {
   intervalMs: number;
   maxDataPoints?: number;
   range: TimeRange;
+  timeBucketAutomated?: boolean;
   timeBucketEnabled?: boolean;
   timeBucketWidth?: number;
   timeBucketUnit?: 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';

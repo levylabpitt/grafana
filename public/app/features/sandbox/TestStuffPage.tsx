@@ -34,7 +34,7 @@ export const TestStuffPage = () => {
 
   const onRunQueries = () => {
     const timeRange = { from: 'now-1h', to: 'now' };
-    const timeBucket = { enabled: false, width: 5, unit: 'm' } as TimeBucket;
+    const timeBucket = { automated: true, enabled: false, width: 5, unit: 'm' } as TimeBucket;
 
     queryRunner.run({
       queries: queryOptions.queries,

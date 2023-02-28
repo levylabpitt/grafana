@@ -134,7 +134,7 @@ const defaults: any = {
   },
   title: '',
   savedQueryLink: null,
-  timeBucket: { enabled: false, width: 5, unit: 'm' },
+  timeBucket: { automated: true, enabled: true, width: 5, unit: 'm' },
 };
 
 export class PanelModel implements DataConfigSource, IPanelModel {
@@ -369,7 +369,7 @@ export class PanelModel implements DataConfigSource, IPanelModel {
       publicDashboardAccessToken,
       timezone: dashboardTimezone,
       timeRange: timeData.timeRange,
-      timeBucket: this.timeBucket || { enabled: false, width: 5, unit: 'm' } as TimeBucket,
+      timeBucket: this.timeBucket || { automated: true, enabled: true, width: 5, unit: 'm' } as TimeBucket,
       timeInfo: timeData.timeInfo,
       maxDataPoints: this.maxDataPoints || Math.floor(width),
       minInterval: this.interval,
