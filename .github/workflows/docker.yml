@@ -27,9 +27,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           push: true
           tags: |
             ghcr.io/levylabpitt/grafana:latest
             ghcr.io/levylabpitt/grafana:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
