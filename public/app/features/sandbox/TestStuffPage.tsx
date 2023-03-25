@@ -6,6 +6,7 @@ import {
   ApplyFieldOverrideOptions,
   dateMath,
   FieldColorModeId,
+  isPluginExtensionLink,
   NavModelItem,
   PanelData,
   TimeBucket,
@@ -158,15 +159,18 @@ export function getDefaultState(): State {
 }
 
 function LinkToBasicApp({ placement }: { placement: string }) {
-  const { extensions, error } = getPluginExtensions({ placement });
+  const { extensions } = getPluginExtensions({ placement });
 
-  if (error) {
+  if (extensions.length === 0) {
     return null;
   }
 
   return (
     <div>
       {extensions.map((extension) => {
+        if (!isPluginExtensionLink(extension)) {
+          return null;
+        }
         return (
           <LinkButton href={extension.path} title={extension.description} key={extension.key}>
             {extension.title}
