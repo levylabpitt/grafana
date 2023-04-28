@@ -49,8 +49,6 @@ export interface QueryRunnerOptions<
   datasource: DataSourceRef | DataSourceApi<TQuery, TOptions> | null;
   queries: TQuery[];
   panelId?: number;
-  /** @deprecate */
-  dashboardId?: number;
   dashboardUID?: string;
   publicDashboardAccessToken?: string;
   timezone: TimeZone;
@@ -207,7 +205,6 @@ export class PanelQueryRunner {
       timezone,
       datasource,
       panelId,
-      dashboardId,
       dashboardUID,
       publicDashboardAccessToken,
       timeRange,
@@ -231,7 +228,6 @@ export class PanelQueryRunner {
       requestId: getNextRequestId(),
       timezone,
       panelId,
-      dashboardId,
       dashboardUID,
       publicDashboardAccessToken,
       range: timeRange,
