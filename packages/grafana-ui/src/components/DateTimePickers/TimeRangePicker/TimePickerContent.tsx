@@ -281,7 +281,8 @@ const getStyles = stylesFactory((theme: GrafanaTheme2, isReversed, hideQuickRang
     body: css`
       display: flex;
       flex-direction: row-reverse;
-      height: ${isContainerTall ? '550px' : '217px'};
+      height: ${isContainerTall ? '381px' : '217px'};
+      max-height: 100vh;
     `,
     leftSide: css`
       display: flex;

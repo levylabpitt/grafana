@@ -97,6 +97,7 @@ export class PanelQueryRunner {
     let lastFieldConfig: ApplyFieldOverrideOptions | undefined = undefined;
     let lastProcessedFrames: DataFrame[] = [];
     let lastRawFrames: DataFrame[] = [];
+    let lastTransformations: DataTransformerConfig[] | undefined;
     let isFirstPacket = true;
     let lastConfigRev = -1;
 
@@ -112,12 +113,18 @@ export class PanelQueryRunner {
     return this.subject.pipe(
       mergeMap((data: PanelData) => {
         let fieldConfig = this.dataConfigSource.getFieldOverrideOptions();
+        let transformations = this.dataConfigSource.getTransformations();
 
-        if (data.series === lastRawFrames && lastFieldConfig?.fieldConfig === fieldConfig?.fieldConfig) {
+        if (
+          data.series === lastRawFrames &&
+          lastFieldConfig?.fieldConfig === fieldConfig?.fieldConfig &&
+          lastTransformations === transformations
+        ) {
           return of({ ...data, structureRev, series: lastProcessedFrames });
         }
 
         lastFieldConfig = fieldConfig;
+        lastTransformations = transformations;
         lastRawFrames = data.series;
         let dataWithTransforms = of(data);
 
