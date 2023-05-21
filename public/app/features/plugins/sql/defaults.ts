@@ -20,7 +20,7 @@ export function applyQueryDefaults(q?: SQLQuery): SQLQuery {
     sql: q?.sql || {
       columns: [createFunctionField()],
       groupBy: [setGroupByField()],
-      limit: 500000,
+      limit: 5000,
     },
   };
 
